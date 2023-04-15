@@ -29,6 +29,8 @@ jobs:
       #     cd terraform
       #     terraform init
       #     terraform plan
+      # TODO: deploy to S3+CloudFront using Terraform. Here's a tutorial:
+      # https://towardsaws.com/provision-a-static-website-on-aws-s3-and-cloudfront-using-terraform-d8004a8f629a
       - name: Deploy to Github Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
