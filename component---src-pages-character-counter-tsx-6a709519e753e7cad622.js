@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkweb_tools=self.webpackChunkweb_tools||[]).push([[816],{6663:function(e,t,n){n.r(t),n.d(t,{Head:function(){return l}});var a=n(7294);t.default=()=>{const[e,t]=a.useState("");return a.createElement("main",null,a.createElement("h1",null,"Character Counter"),a.createElement("textarea",{value:e,onChange:e=>t(e.target.value)}),a.createElement("p",null,"Character count ",e.length))};const l=()=>a.createElement("title",null,"Character Counter")}}]);
+//# sourceMappingURL=component---src-pages-character-counter-tsx-6a709519e753e7cad622.js.map
