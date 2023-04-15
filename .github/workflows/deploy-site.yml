@@ -8,7 +8,7 @@ permissions:
 
 jobs:
   build-and-deploy:
-    name: 'Terraform'
+    name: 'Build and Deploy'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -19,7 +19,7 @@ jobs:
       - name: Build
         run: |
           npm ci
-          npm run build
+          npm run build --prefix-paths
       # - uses: hashicorp/setup-terraform@v2
       # - name: Run Terraform
       #   env:

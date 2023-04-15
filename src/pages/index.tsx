@@ -1,5 +1,5 @@
 import * as React from "react";
-import { HeadFC, Link, PageProps } from "gatsby";
+import { HeadFC, Link, PageProps, withPrefix } from "gatsby";
 
 const links = [
   { path: "/character-counter", name: "Character Counter" },
@@ -12,7 +12,7 @@ const IndexPage: React.FC<PageProps> = () => {
       <h1>Web Tools</h1>
       {links.map(({ path, name }) => (
         <p>
-          <Link to={path}>{name}</Link>
+          <Link to={withPrefix(path)}>{name}</Link>
         </p>
       ))}
     </main>
