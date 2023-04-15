@@ -2,8 +2,15 @@ import * as React from "react";
 import { HeadFC, PageProps } from "gatsby";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
+import localizedFormat from "dayjs/plugin/localizedFormat";
 
 dayjs.extend(duration);
+dayjs.extend(localizedFormat);
+
+const WORKDAY_MS = 8 * 60 * 60 * 1000; // 8 hours in milliseconds
+
+const formatDuration = (duration: number) =>
+  dayjs.duration(duration).format("HH:mm:ss");
 
 /**
  * Based on https://www.geeksforgeeks.org/create-a-stop-watch-using-reactjs/
@@ -28,6 +35,8 @@ const TimeTracker: React.FC<PageProps> = () => {
     };
   }, [isActive, isPaused]);
 
+  const timeRemaining = WORKDAY_MS - time;
+
   const handleStart = () => {
     setIsActive(true);
     setIsPaused(false);
@@ -44,7 +53,11 @@ const TimeTracker: React.FC<PageProps> = () => {
   return (
     <main>
       <h1>Time Tracker</h1>
-      <p>{dayjs.duration(time).format("HH:mm:ss")}</p>
+      <p>Time tracked so far: {formatDuration(time)}</p>
+      <p>Time remaining: {formatDuration(timeRemaining)}</p>
+      <p>
+        Finish time: {dayjs().add(timeRemaining, "millisecond").format("LTS")}
+      </p>
       {isActive ? (
         <>
           <button onClick={handleReset}>Reset</button>

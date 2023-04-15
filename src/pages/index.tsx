@@ -1,5 +1,5 @@
 import * as React from "react";
-import { HeadFC, Link, PageProps, withPrefix } from "gatsby";
+import { HeadFC, Link, PageProps } from "gatsby";
 
 const links = [
   { path: "/character-counter", name: "Character Counter" },
