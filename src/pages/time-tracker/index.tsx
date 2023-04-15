@@ -1,5 +1,9 @@
 import * as React from "react";
 import { HeadFC, PageProps } from "gatsby";
+import dayjs from "dayjs";
+import duration from "dayjs/plugin/duration";
+
+dayjs.extend(duration);
 
 /**
  * Based on https://www.geeksforgeeks.org/create-a-stop-watch-using-reactjs/
@@ -40,7 +44,7 @@ const TimeTracker: React.FC<PageProps> = () => {
   return (
     <main>
       <h1>Time Tracker</h1>
-      <p>{time / 1000}</p>
+      <p>{dayjs.duration(time).format("HH:mm:ss")}</p>
       {isActive ? (
         <>
           <button onClick={handleReset}>Reset</button>
