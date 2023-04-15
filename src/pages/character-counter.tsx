@@ -7,7 +7,7 @@ const CharacterCounterPage: React.FC<PageProps> = () => {
     <main>
       <h1>Character Counter</h1>
       <textarea value={text} onChange={(e) => setText(e.target.value)} />
-      <p>Character count: {text.length}</p>
+      <p>Character count {text.length}</p>
     </main>
   );
 };
