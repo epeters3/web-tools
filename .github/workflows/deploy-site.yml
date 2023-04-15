@@ -19,7 +19,7 @@ jobs:
       - name: Build
         run: |
           npm ci
-          npm run build --prefix-paths
+          npm run build -- --prefix-paths
       # - uses: hashicorp/setup-terraform@v2
       # - name: Run Terraform
       #   env:

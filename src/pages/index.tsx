@@ -12,7 +12,7 @@ const IndexPage: React.FC<PageProps> = () => {
       <h1>Web Tools</h1>
       {links.map(({ path, name }) => (
         <p>
-          <Link to={withPrefix(path)}>{name}</Link>
+          <Link to={path}>{name}</Link>
         </p>
       ))}
     </main>
