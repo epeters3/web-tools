@@ -18,7 +18,6 @@
   "dependencies": {
     "@mdx-js/react": "^2.3.0",
     "gatsby": "^5.8.1",
-    "gatsby-plugin-google-gtag": "^5.8.0",
     "gatsby-plugin-mdx": "^5.8.0",
     "gatsby-source-filesystem": "^5.8.0",
     "react": "^18.2.0",
