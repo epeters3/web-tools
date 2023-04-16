@@ -6,23 +6,39 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
 import { CommonHead, PageLayout } from "../components/PageLayout";
-import { List, ListItem } from "@mui/material";
+import { Card, CardContent, Grid, Typography } from "@mui/material";
 
 const links = [
-  { path: "/character-counter", name: "Character Counter" },
-  { path: "/time-tracker", name: "Time Tracker" },
+  {
+    path: "/character-counter",
+    name: "Character Counter",
+    description: "Count how how many characters are in a body of text.",
+  },
+  {
+    path: "/time-tracker",
+    name: "Time Tracker",
+    description:
+      "Track time, with the ability to pause and resume, and see how much time you have left.",
+  },
 ];
 
 const IndexPage: React.FC<PageProps> = () => {
   return (
     <PageLayout heading="Web Tools">
-      <List>
-        {links.map(({ path, name }) => (
-          <ListItem>
-            <Link to={path}>{name}</Link>
-          </ListItem>
+      <Grid container spacing={2}>
+        {links.map(({ path, name, description }) => (
+          <Grid item xs={12} md={6}>
+            <Link to={path}>
+              <Card sx={{ padding: (theme) => theme.spacing(2) }}>
+                <CardContent>
+                  <Typography variant="h4">{name}</Typography>
+                  <Typography>{description}</Typography>
+                </CardContent>
+              </Card>
+            </Link>
+          </Grid>
         ))}
-      </List>
+      </Grid>
     </PageLayout>
   );
 };
