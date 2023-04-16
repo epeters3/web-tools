@@ -1,19 +1,20 @@
 import * as React from "react";
 import { Link, HeadFC, PageProps } from "gatsby";
+import { CommonHead, PageLayout } from "../components/PageLayout";
+import { Typography } from "@mui/material";
 
 const NotFoundPage: React.FC<PageProps> = () => {
   return (
-    <main>
-      <h1>Page not found</h1>
-      <p>
+    <PageLayout heading="Page not found">
+      <Typography>
         Sorry 😔, we couldn’t find what you were looking for.
         <br />
         <Link to="/">Go home</Link>.
-      </p>
-    </main>
+      </Typography>
+    </PageLayout>
   );
 };
 
 export default NotFoundPage;
 
-export const Head: HeadFC = () => <title>Not found</title>;
+export const Head: HeadFC = () => <CommonHead title="Not found" />;
