@@ -45,9 +45,10 @@ const TimeTracker: React.FC<PageProps> = () => {
 
   React.useEffect(() => {
     const interval = setInterval(() => {
-      setNow((now) => now + 1000);
+      const elapsed = Date.now() - now;
+      setNow((now) => now + elapsed);
       if (isActive && isPaused === false) {
-        setTime((time) => time + 1000);
+        setTime((time) => time + elapsed);
       }
     }, 1000);
     return () => clearInterval(interval);
