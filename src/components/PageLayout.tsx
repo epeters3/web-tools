@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import {
   AppBar,
+  Box,
   IconButton,
   ThemeProvider,
   Toolbar,
@@ -10,7 +11,7 @@ import {
   styled,
 } from "@mui/material";
 import { theme } from "../utils/theme";
-import { Home } from "@mui/icons-material";
+import { GitHub, Home } from "@mui/icons-material";
 import { Link } from "gatsby";
 
 const Main = styled("main")(({ theme }) => ({ padding: theme.spacing(2) }));
@@ -31,6 +32,14 @@ export const PageLayout = ({
             <Home />
           </IconButton>
         </Link>
+        <Typography variant="h5">Web Tools</Typography>
+        <Box sx={{ marginLeft: "auto" }}>
+          <Link to="https://github.com/epeters3/web-tools">
+            <IconButton>
+              <GitHub />
+            </IconButton>
+          </Link>
+        </Box>
       </Toolbar>
     </AppBar>
     <div
