@@ -4,11 +4,30 @@ import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import { CommonHead, PageLayout } from "../../components/PageLayout";
-import { Box, Button, ButtonGroup, Typography, styled } from "@mui/material";
-import { Pause, PlayArrow } from "@mui/icons-material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Button,
+  ButtonGroup,
+  Typography,
+  styled,
+} from "@mui/material";
+import { ExpandMore, Pause, PlayArrow } from "@mui/icons-material";
 
 dayjs.extend(duration);
 dayjs.extend(localizedFormat);
+
+type Action = "Pause" | "Resume" | "Start";
+
+type Event = {
+  /**
+   * Millis since unix epoch.
+   */
+  timestamp: number;
+  action: Action;
+};
 
 const WORKDAY_MS = 8 * 60 * 60 * 1000; // 8 hours in milliseconds
 
@@ -40,6 +59,7 @@ const DataDisplay = ({
 const TimeTracker: React.FC<PageProps> = () => {
   const [isActive, setIsActive] = React.useState(false);
   const [isPaused, setIsPaused] = React.useState(true);
+  const [history, setHistory] = React.useState<Event[]>([]);
   const [now, setNow] = React.useState(Date.now());
   const [time, setTime] = React.useState(0);
 
@@ -54,20 +74,26 @@ const TimeTracker: React.FC<PageProps> = () => {
     return () => clearInterval(interval);
   });
 
+  const recordEvent = (action: Action) =>
+    setHistory((prev) => [...prev, { action, timestamp: Date.now() }]);
+
   const timeRemaining = WORKDAY_MS - time;
 
   const handleStart = () => {
     setIsActive(true);
     setIsPaused(false);
+    recordEvent("Start");
   };
 
   const handlePauseResume = () => {
     setIsPaused(!isPaused);
+    recordEvent(isPaused ? "Resume" : "Pause");
   };
 
   const handleReset = () => {
     setIsActive(false);
     setTime(0);
+    setHistory([]);
   };
 
   return (
@@ -104,6 +130,28 @@ const TimeTracker: React.FC<PageProps> = () => {
             Start
           </Button>
         )}
+        {history.length > 1 ? (
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMore />}>
+              <Typography variant="h6">History</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              {history.map((event) => (
+                <Box
+                  sx={{
+                    display: "flex",
+                    gap: 2,
+                    marginBottom: (theme) => theme.spacing(1),
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Box>{event.action}</Box>
+                  <Box>{dayjs(event.timestamp).format("LTS")}</Box>
+                </Box>
+              ))}
+            </AccordionDetails>
+          </Accordion>
+        ) : null}
       </ColumnBox>
     </PageLayout>
   );
