@@ -3,7 +3,7 @@ import { HeadFC, PageProps } from "gatsby";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import localizedFormat from "dayjs/plugin/localizedFormat";
-import { CommonHead, PageLayout } from "../../components/PageLayout";
+import { CommonHead, PageLayout } from "../components/PageLayout";
 import {
   Accordion,
   AccordionDetails,
@@ -14,12 +14,21 @@ import {
   Typography,
   styled,
 } from "@mui/material";
-import { ExpandMore, Pause, PlayArrow, RestartAlt } from "@mui/icons-material";
+import {
+  Edit,
+  ExpandMore,
+  Pause,
+  PlayArrow,
+  RestartAlt,
+} from "@mui/icons-material";
+import { TimeEditor } from "../components/TimeEditor";
+import { WORKDAY_MS } from "../utils/constants";
+import { formatDuration } from "../utils";
 
 dayjs.extend(duration);
 dayjs.extend(localizedFormat);
 
-type Action = "Pause" | "Resume" | "Start";
+type Action = "Pause" | "Resume" | "Start" | "Edit";
 
 type Event = {
   /**
@@ -28,13 +37,6 @@ type Event = {
   timestamp: number;
   action: Action;
 };
-
-const WORKDAY_MS = 8 * 60 * 60 * 1000; // 8 hours in milliseconds
-
-const formatDuration = (duration: number) =>
-  `${duration < 0 ? "- " : ""}${dayjs
-    .duration(Math.abs(duration))
-    .format("HH:mm:ss")}`;
 
 const ColumnBox = styled(Box)({
   display: "flex",
@@ -61,6 +63,7 @@ const DataDisplay = ({
 const TimeTracker: React.FC<PageProps> = () => {
   const [isActive, setIsActive] = React.useState(false);
   const [isPaused, setIsPaused] = React.useState(true);
+  const [isEditorOpen, setIsEditorOpen] = React.useState(false);
   const [history, setHistory] = React.useState<Event[]>([]);
   const [now, setNow] = React.useState(Date.now());
   const [time, setTime] = React.useState(0);
@@ -126,6 +129,13 @@ const TimeTracker: React.FC<PageProps> = () => {
             >
               Reset
             </Button>
+            <Button
+              variant="outlined"
+              startIcon={<Edit />}
+              onClick={() => setIsEditorOpen(true)}
+            >
+              Edit
+            </Button>
           </ButtonGroup>
         ) : (
           <Button
@@ -136,6 +146,15 @@ const TimeTracker: React.FC<PageProps> = () => {
             Start
           </Button>
         )}
+        {isEditorOpen ? (
+          <TimeEditor
+            onSave={(delta) => {
+              setTime((current) => current + delta);
+              recordEvent("Edit");
+              setIsEditorOpen(false);
+            }}
+          />
+        ) : null}
         {history.length > 0 ? (
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMore />}>
