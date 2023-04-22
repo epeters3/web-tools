@@ -14,7 +14,7 @@ import {
   Typography,
   styled,
 } from "@mui/material";
-import { ExpandMore, Pause, PlayArrow } from "@mui/icons-material";
+import { ExpandMore, Pause, PlayArrow, RestartAlt } from "@mui/icons-material";
 
 dayjs.extend(duration);
 dayjs.extend(localizedFormat);
@@ -32,7 +32,9 @@ type Event = {
 const WORKDAY_MS = 8 * 60 * 60 * 1000; // 8 hours in milliseconds
 
 const formatDuration = (duration: number) =>
-  dayjs.duration(duration).format("HH:mm:ss");
+  `${duration < 0 ? "- " : ""}${dayjs
+    .duration(Math.abs(duration))
+    .format("HH:mm:ss")}`;
 
 const ColumnBox = styled(Box)({
   display: "flex",
@@ -117,7 +119,11 @@ const TimeTracker: React.FC<PageProps> = () => {
             >
               {isPaused ? "Resume" : "Pause"}
             </Button>
-            <Button variant="outlined" onClick={handleReset}>
+            <Button
+              variant="outlined"
+              startIcon={<RestartAlt />}
+              onClick={handleReset}
+            >
               Reset
             </Button>
           </ButtonGroup>
@@ -130,7 +136,7 @@ const TimeTracker: React.FC<PageProps> = () => {
             Start
           </Button>
         )}
-        {history.length > 1 ? (
+        {history.length > 0 ? (
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMore />}>
               <Typography variant="h6">History</Typography>
