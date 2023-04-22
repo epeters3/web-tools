@@ -34,7 +34,7 @@ export const PageLayout = ({
         </Link>
         <Typography variant="h5">Web Tools</Typography>
         <Box sx={{ marginLeft: "auto" }}>
-          <Link to="https://github.com/epeters3/web-tools">
+          <Link to="https://github.com/epeters3/web-tools" target="_blank">
             <IconButton>
               <GitHub />
             </IconButton>
