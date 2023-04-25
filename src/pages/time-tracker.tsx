@@ -15,6 +15,7 @@ import {
   styled,
 } from "@mui/material";
 import {
+  Close,
   Edit,
   ExpandMore,
   Pause,
@@ -124,17 +125,17 @@ const TimeTracker: React.FC<PageProps> = () => {
             </Button>
             <Button
               variant="outlined"
+              startIcon={isEditorOpen ? <Close /> : <Edit />}
+              onClick={() => setIsEditorOpen((isOpen) => !isOpen)}
+            >
+              Edit
+            </Button>
+            <Button
+              variant="outlined"
               startIcon={<RestartAlt />}
               onClick={handleReset}
             >
               Reset
-            </Button>
-            <Button
-              variant="outlined"
-              startIcon={<Edit />}
-              onClick={() => setIsEditorOpen(true)}
-            >
-              Edit
             </Button>
           </ButtonGroup>
         ) : (
@@ -150,7 +151,7 @@ const TimeTracker: React.FC<PageProps> = () => {
           <TimeEditor
             onSave={(delta) => {
               setTime((current) => current + delta);
-              recordEvent("Edit");
+              delta !== 0 && recordEvent("Edit");
               setIsEditorOpen(false);
             }}
           />
