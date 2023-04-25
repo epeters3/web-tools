@@ -29,12 +29,14 @@
     "gatsby-source-filesystem": "^5.8.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "styled-components": "^5.3.9"
+    "styled-components": "^5.3.9",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/node": "^18.15.11",
     "@types/react": "^18.0.33",
     "@types/react-dom": "^18.0.11",
+    "@types/uuid": "^9.0.1",
     "typescript": "^5.0.4"
   }
 }

@@ -51,7 +51,11 @@ export const PageLayout = ({
       }}
     >
       <Main>
-        {heading ? <Typography variant="h2">{heading}</Typography> : null}
+        {heading ? (
+          <Typography variant="h2" mb={2}>
+            {heading}
+          </Typography>
+        ) : null}
         {children}
       </Main>
     </div>

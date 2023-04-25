@@ -25,6 +25,7 @@ import {
 import { TimeEditor } from "../components/TimeEditor";
 import { WORKDAY_MS } from "../utils/constants";
 import { formatDuration } from "../utils";
+import { ColumnBox } from "../components/ColumnBox";
 
 dayjs.extend(duration);
 dayjs.extend(localizedFormat);
@@ -38,12 +39,6 @@ type Event = {
   timestamp: number;
   action: Action;
 };
-
-const ColumnBox = styled(Box)({
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-});
 
 const DataDisplay = ({
   children,

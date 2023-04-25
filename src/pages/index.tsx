@@ -20,6 +20,11 @@ const links = [
     description:
       "Track time, with the ability to pause and resume, and see how much time you have left.",
   },
+  {
+    path: "/uuid-generator",
+    name: "UUID Generator",
+    description: "Quickly generate a copy a v4 UUID.",
+  },
 ];
 
 const IndexPage: React.FC<PageProps> = () => {
