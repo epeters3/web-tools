@@ -25,6 +25,11 @@ const links = [
     name: "UUID Generator",
     description: "Quickly generate a copy a v4 UUID.",
   },
+  {
+    path: "/json-formatter",
+    name: "JSON Formatter",
+    description: "Format JSON, making it easier to read, and validate it.",
+  },
 ];
 
 const IndexPage: React.FC<PageProps> = () => {
