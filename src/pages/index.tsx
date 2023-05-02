@@ -38,7 +38,7 @@ const IndexPage: React.FC<PageProps> = () => {
       <Grid container spacing={2}>
         {links.map(({ path, name, description }) => (
           <Grid item xs={12} md={6}>
-            <Link to={path}>
+            <Link to={path} style={{ textDecoration: "none" }}>
               <Card sx={{ padding: (theme) => theme.spacing(2) }}>
                 <CardContent>
                   <Typography variant="h4">{name}</Typography>
