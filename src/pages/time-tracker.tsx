@@ -11,8 +11,12 @@ import {
   Box,
   Button,
   ButtonGroup,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Typography,
-  styled,
 } from "@mui/material";
 import {
   Close,
@@ -53,6 +57,36 @@ const DataDisplay = ({
   </ColumnBox>
 );
 
+const ResetModal = ({
+  isOpen,
+  onClose,
+  onReset,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  onReset: () => void;
+}) => (
+  <Dialog open={isOpen} onClose={onClose}>
+    <DialogTitle>Are You Sure?</DialogTitle>
+    <DialogContent>
+      <DialogContentText>
+        Are you sure you want to reset? All of your progress will be lost.
+      </DialogContentText>
+    </DialogContent>
+    <DialogActions>
+      <Button
+        onClick={() => {
+          onReset();
+          onClose();
+        }}
+      >
+        Yes I'm sure
+      </Button>
+      <Button onClick={onClose}>No, cancel</Button>
+    </DialogActions>
+  </Dialog>
+);
+
 /**
  * Based on https://www.geeksforgeeks.org/create-a-stop-watch-using-reactjs/
  */
@@ -60,6 +94,7 @@ const TimeTracker: React.FC<PageProps> = () => {
   const [isActive, setIsActive] = React.useState(false);
   const [isPaused, setIsPaused] = React.useState(true);
   const [isEditorOpen, setIsEditorOpen] = React.useState(false);
+  const [isResetModalOpen, setIsResetModalOpen] = React.useState(false);
   const [history, setHistory] = React.useState<Event[]>([]);
   const [now, setNow] = React.useState(Date.now());
   const [time, setTime] = React.useState(0);
@@ -99,6 +134,11 @@ const TimeTracker: React.FC<PageProps> = () => {
 
   return (
     <PageLayout heading="Time Tracker">
+      <ResetModal
+        isOpen={isResetModalOpen}
+        onClose={() => setIsResetModalOpen(false)}
+        onReset={handleReset}
+      />
       <ColumnBox gap={2}>
         <DataDisplay subtitle="Time tracked so far">
           {formatDuration(time)}
@@ -128,7 +168,7 @@ const TimeTracker: React.FC<PageProps> = () => {
             <Button
               variant="outlined"
               startIcon={<RestartAlt />}
-              onClick={handleReset}
+              onClick={() => setIsResetModalOpen(true)}
             >
               Reset
             </Button>
