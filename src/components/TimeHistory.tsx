@@ -5,13 +5,34 @@ import dayjs from "dayjs";
 
 export type TimeAction = "Pause" | "Resume" | "Start" | "Edit";
 
-export type TimeEvent = {
+type BaseEvent = {
   /**
-   * Millis since unix epoch.
+   * Milliseconds since unix epoch of when the event occurred.
    */
   timestamp: number;
-  action: TimeAction;
-};
+}
+
+type PauseEvent = BaseEvent & {
+  action: "Pause"
+}
+
+type ResumeEvent = BaseEvent & {
+  action: "Resume"
+}
+
+type StartEvent = BaseEvent & {
+  action: "Start"
+}
+
+type EditEvent = BaseEvent & {
+  action: "Edit"
+  /**
+   * Duration of the time adjustment that was made, in milliseconds.
+   */
+  delta: number;
+}
+
+export type TimeEvent = PauseEvent | ResumeEvent | StartEvent | EditEvent;
 
 export const TimeHistory = ({ history }: { history: TimeEvent[] }) => {
   return history.length > 0 ? (

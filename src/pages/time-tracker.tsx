@@ -98,20 +98,20 @@ const TimeTracker: React.FC<PageProps> = () => {
     return () => clearInterval(interval);
   });
 
-  const recordEvent = (action: TimeAction) =>
-    setHistory((prev) => [...prev, { action, timestamp: Date.now() }]);
+  const recordEvent = (event: TimeEvent) =>
+    setHistory((prev) => [...prev, event]);
 
   const timeRemaining = WORKDAY_MS - time;
 
   const handleStart = () => {
     setIsActive(true);
     setIsPaused(false);
-    recordEvent("Start");
+    recordEvent({action: "Start", timestamp: Date.now()});
   };
 
   const handlePauseResume = () => {
     setIsPaused(!isPaused);
-    recordEvent(isPaused ? "Resume" : "Pause");
+    recordEvent({action: isPaused ? "Resume" : "Pause", timestamp: Date.now()});
   };
 
   const handleReset = () => {
@@ -175,7 +175,7 @@ const TimeTracker: React.FC<PageProps> = () => {
           <TimeEditor
             onSave={(delta) => {
               setTime((current) => current + delta);
-              delta !== 0 && recordEvent("Edit");
+              delta !== 0 && recordEvent({action: "Edit", timestamp: Date.now(), delta});
               setIsEditorOpen(false);
             }}
           />
