@@ -14,13 +14,7 @@ import {
   DialogTitle,
   Typography,
 } from "@mui/material";
-import {
-  Close,
-  Edit,
-  Pause,
-  PlayArrow,
-  RestartAlt,
-} from "@mui/icons-material";
+import { Close, Edit, Pause, PlayArrow, RestartAlt } from "@mui/icons-material";
 import { TimeEditor } from "../components/TimeEditor";
 import { WORKDAY_MS } from "../utils/constants";
 import { formatDuration } from "../utils";
@@ -29,8 +23,6 @@ import { TimeEvent, TimeHistory } from "../components/TimeHistory";
 
 dayjs.extend(duration);
 dayjs.extend(localizedFormat);
-
-
 
 const DataDisplay = ({
   children,
@@ -106,12 +98,15 @@ const TimeTracker: React.FC<PageProps> = () => {
   const handleStart = () => {
     setIsActive(true);
     setIsPaused(false);
-    recordEvent({action: "Start", timestamp: Date.now()});
+    recordEvent({ action: "Start", timestamp: Date.now() });
   };
 
   const handlePauseResume = () => {
     setIsPaused(!isPaused);
-    recordEvent({action: isPaused ? "Resume" : "Pause", timestamp: Date.now()});
+    recordEvent({
+      action: isPaused ? "Resume" : "Pause",
+      timestamp: Date.now(),
+    });
   };
 
   const handleReset = () => {
@@ -175,7 +170,8 @@ const TimeTracker: React.FC<PageProps> = () => {
           <TimeEditor
             onSave={(delta) => {
               setTime((current) => current + delta);
-              delta !== 0 && recordEvent({action: "Edit", timestamp: Date.now(), delta});
+              delta !== 0 &&
+                recordEvent({ action: "Edit", timestamp: Date.now(), delta });
               setIsEditorOpen(false);
             }}
           />
