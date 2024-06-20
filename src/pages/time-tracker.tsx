@@ -25,7 +25,7 @@ import { TimeEditor } from "../components/TimeEditor";
 import { WORKDAY_MS } from "../utils/constants";
 import { formatDuration } from "../utils";
 import { ColumnBox } from "../components/ColumnBox";
-import { TimeAction, TimeEvent, TimeHistory } from "../components/TimeHistory";
+import { TimeEvent, TimeHistory } from "../components/TimeHistory";
 
 dayjs.extend(duration);
 dayjs.extend(localizedFormat);
