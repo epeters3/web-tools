@@ -153,6 +153,7 @@ const TimeTracker: React.FC<PageProps> = () => {
           <ButtonGroup>
             <Button
               variant="outlined"
+              color={isPaused ? "warning" : "primary"}
               startIcon={isPaused ? <PlayArrow /> : <Pause />}
               onClick={handlePauseResume}
             >
