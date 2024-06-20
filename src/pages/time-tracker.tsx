@@ -5,10 +5,6 @@ import duration from "dayjs/plugin/duration";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import { CommonHead, PageLayout } from "../components/PageLayout";
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
   Button,
   ButtonGroup,
   Dialog,
@@ -21,7 +17,6 @@ import {
 import {
   Close,
   Edit,
-  ExpandMore,
   Pause,
   PlayArrow,
   RestartAlt,
@@ -30,19 +25,12 @@ import { TimeEditor } from "../components/TimeEditor";
 import { WORKDAY_MS } from "../utils/constants";
 import { formatDuration } from "../utils";
 import { ColumnBox } from "../components/ColumnBox";
+import { TimeAction, TimeEvent, TimeHistory } from "../components/TimeHistory";
 
 dayjs.extend(duration);
 dayjs.extend(localizedFormat);
 
-type Action = "Pause" | "Resume" | "Start" | "Edit";
 
-type Event = {
-  /**
-   * Millis since unix epoch.
-   */
-  timestamp: number;
-  action: Action;
-};
 
 const DataDisplay = ({
   children,
@@ -95,7 +83,7 @@ const TimeTracker: React.FC<PageProps> = () => {
   const [isPaused, setIsPaused] = React.useState(true);
   const [isEditorOpen, setIsEditorOpen] = React.useState(false);
   const [isResetModalOpen, setIsResetModalOpen] = React.useState(false);
-  const [history, setHistory] = React.useState<Event[]>([]);
+  const [history, setHistory] = React.useState<TimeEvent[]>([]);
   const [now, setNow] = React.useState(Date.now());
   const [time, setTime] = React.useState(0);
 
@@ -110,7 +98,7 @@ const TimeTracker: React.FC<PageProps> = () => {
     return () => clearInterval(interval);
   });
 
-  const recordEvent = (action: Action) =>
+  const recordEvent = (action: TimeAction) =>
     setHistory((prev) => [...prev, { action, timestamp: Date.now() }]);
 
   const timeRemaining = WORKDAY_MS - time;
@@ -192,28 +180,7 @@ const TimeTracker: React.FC<PageProps> = () => {
             }}
           />
         ) : null}
-        {history.length > 0 ? (
-          <Accordion>
-            <AccordionSummary expandIcon={<ExpandMore />}>
-              <Typography variant="h6">History</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              {history.map((event) => (
-                <Box
-                  sx={{
-                    display: "flex",
-                    gap: 2,
-                    marginBottom: (theme) => theme.spacing(1),
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Box>{event.action}</Box>
-                  <Box>{dayjs(event.timestamp).format("LTS")}</Box>
-                </Box>
-              ))}
-            </AccordionDetails>
-          </Accordion>
-        ) : null}
+        <TimeHistory history={history} />
       </ColumnBox>
     </PageLayout>
   );
