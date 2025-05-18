@@ -24,12 +24,16 @@
     "@mui/material": "^5.12.0",
     "@mui/styled-engine-sc": "^5.12.0",
     "dayjs": "^1.11.7",
+    "dexie": "^4.0.11",
+    "dexie-react-hooks": "^1.1.7",
     "gatsby": "^5.8.1",
     "gatsby-plugin-mdx": "^5.8.0",
+    "gatsby-plugin-use-query-params": "^1.0.1",
     "gatsby-source-filesystem": "^5.8.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "styled-components": "^5.3.9",
+    "use-query-params": "^2.2.1",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

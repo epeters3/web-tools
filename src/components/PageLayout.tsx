@@ -13,6 +13,8 @@ import {
 import { theme } from "../utils/theme";
 import { GitHub, Home } from "@mui/icons-material";
 import { Link } from "gatsby";
+import { QueryParamProvider } from "use-query-params";
+import { ReachAdapter } from "use-query-params/adapters/reach";
 
 const Main = styled("main")(({ theme }) => ({ padding: theme.spacing(2) }));
 
@@ -29,45 +31,47 @@ export const PageLayout = ({
   children: ReactNode;
   heading?: string;
 }) => (
-  <ThemeProvider theme={theme}>
-    <CssBaseline />
-    <AppBar position="static">
-      <Toolbar>
-        <AppBarGroup>
-          <Link to="/">
-            <IconButton>
-              <Home />
-            </IconButton>
-          </Link>
-          <Typography variant="h5">Web Tools</Typography>
-        </AppBarGroup>
-        <AppBarGroup sx={{ marginLeft: "auto" }}>
-          <Link to="https://github.com/epeters3/web-tools" target="_blank">
-            <IconButton>
-              <GitHub />
-            </IconButton>
-          </Link>
-        </AppBarGroup>
-      </Toolbar>
-    </AppBar>
-    <div
-      style={{
-        width: "100%",
-        display: "flex",
-        alignItems: "center",
-        flexDirection: "column",
-      }}
-    >
-      <Main>
-        {heading ? (
-          <Typography variant="h2" mb={2}>
-            {heading}
-          </Typography>
-        ) : null}
-        {children}
-      </Main>
-    </div>
-  </ThemeProvider>
+  <QueryParamProvider adapter={ReachAdapter}>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <AppBar position="static">
+        <Toolbar>
+          <AppBarGroup>
+            <Link to="/">
+              <IconButton>
+                <Home />
+              </IconButton>
+            </Link>
+            <Typography variant="h5">Web Tools</Typography>
+          </AppBarGroup>
+          <AppBarGroup sx={{ marginLeft: "auto" }}>
+            <Link to="https://github.com/epeters3/web-tools" target="_blank">
+              <IconButton>
+                <GitHub />
+              </IconButton>
+            </Link>
+          </AppBarGroup>
+        </Toolbar>
+      </AppBar>
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          flexDirection: "column",
+        }}
+      >
+        <Main>
+          {heading ? (
+            <Typography variant="h2" mb={2}>
+              {heading}
+            </Typography>
+          ) : null}
+          {children}
+        </Main>
+      </div>
+    </ThemeProvider>
+  </QueryParamProvider>
 );
 
 export const CommonHead = ({ title }: { title: string }) => (

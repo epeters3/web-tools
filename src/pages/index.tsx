@@ -10,15 +10,20 @@ import { Card, CardContent, Grid, Typography } from "@mui/material";
 
 const links = [
   {
-    path: "/character-counter",
-    name: "Character Counter",
-    description: "Count how how many characters are in a body of text.",
-  },
-  {
     path: "/time-tracker",
     name: "Time Tracker",
     description:
       "Track time, with the ability to pause and resume, and see how much time you have left.",
+  },
+  {
+    path: "fitness-tracker",
+    name: "Fitness Tracker",
+    description: "Log and visualize weight/rep-related exercises",
+  },
+  {
+    path: "/json-formatter",
+    name: "JSON Formatter",
+    description: "Format JSON, making it easier to read, and validate it.",
   },
   {
     path: "/uuid-generator",
@@ -26,9 +31,9 @@ const links = [
     description: "Quickly generate a copy a v4 UUID.",
   },
   {
-    path: "/json-formatter",
-    name: "JSON Formatter",
-    description: "Format JSON, making it easier to read, and validate it.",
+    path: "/character-counter",
+    name: "Character Counter",
+    description: "Count how how many characters are in a body of text.",
   },
 ];
 
