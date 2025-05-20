@@ -14,15 +14,18 @@ export type Exercise = {
  * A log entry of a repetition set that was done for an exercise.
  */
 export type ExerciseSet = {
-  id: string;
   /**
-   * MS since epoch. The time when the set was done.
+   * Primary key.
    */
-  createdAt: number;
+  id: string;
   /**
    * The ID of the exercise that was done.
    */
   exerciseId: string;
+  /**
+   * MS since epoch. The time when the set was done.
+   */
+  createdAt: number;
   /**
    * The number of repetitions that were done.
    */
@@ -54,5 +57,9 @@ export const db = new Dexie("WebToolsDatabase") as Dexie & {
 
 db.version(1).stores({
   exercises: "id,name,minWeight,maxWeight",
-  exerciseSets: "id,exerciseId,reps,weight,duration,rpe",
+  // The [field1+field2] syntax creates a compound index on field1 and field2.
+  // This allows us to filter on both fields at once, and orders the results
+  // by field1 first, then field2. Source:
+  // https://dexie.org/docs/Compound-Index
+  exerciseSets: "id,[exerciseId+createdAt],reps,weight,duration,rpe",
 });

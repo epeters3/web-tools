@@ -8,26 +8,56 @@ import { Exercise, ExerciseSet, db } from "../../utils/db";
 import { ColumnBox } from "../../components/ColumnBox";
 import { v4 as uuidv4 } from "uuid";
 import { Check } from "@mui/icons-material";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  CartesianGrid,
+} from "recharts";
+import dayjs from "dayjs";
+import localizedFormat from "dayjs/plugin/localizedFormat";
 
-const ExerciseHistory = ({ exercise }: { exercise: Exercise }) => {
-  // TODO: use a chart instead.
-  const exerciseSets = useLiveQuery(() =>
-    db.exerciseSets.where("exerciseId").equals(exercise.id).sortBy("createdAt")
+dayjs.extend(localizedFormat);
+
+const ExerciseChart = ({
+  sets,
+  dataKey,
+  color,
+}: {
+  sets: ExerciseSet[];
+  dataKey: keyof ExerciseSet;
+  color: string;
+}) => (
+  <ResponsiveContainer width="100%" height={150}>
+    <LineChart data={sets}>
+      <XAxis
+        dataKey="createdAt"
+        tickFormatter={(value) => dayjs(value).format("L")}
+      />
+      <YAxis />
+      <Tooltip />
+      <CartesianGrid strokeDasharray="3 3" />
+      <Line type="monotone" dataKey={dataKey} stroke={color} />
+    </LineChart>
+  </ResponsiveContainer>
+);
+
+const ExerciseHistoryChart = ({ exercise }: { exercise: Exercise }) => {
+  const sets = useLiveQuery(() =>
+    db.exerciseSets.where("exerciseId").equals(exercise.id).toArray()
   );
-  if (!exerciseSets || exerciseSets.length === 0) {
+  if (!sets || sets.length === 0) {
     return <Alert severity="info">No history yet for this exercise</Alert>;
   }
   return (
-    <ColumnBox>
-      <Typography variant="h5">History</Typography>
-      {exerciseSets.map((set) => (
-        <div key={set.id}>
-          <Typography variant="body1">
-            {set.weight} lbs x {set.reps} reps on{" "}
-            {new Date(set.createdAt).toLocaleString()}
-          </Typography>
-        </div>
-      ))}
+    <ColumnBox sx={{ marginTop: (theme) => theme.spacing(2) }}>
+      <Typography variant="h6">Weight</Typography>
+      <ExerciseChart sets={sets} dataKey="weight" color="#8884d8" />
+      <Typography variant="h6">Reps</Typography>
+      <ExerciseChart sets={sets} dataKey="reps" color="#82ca9d" />
     </ColumnBox>
   );
 };
@@ -96,6 +126,28 @@ const TrackExercise = ({ exercise }: { exercise: Exercise }) => {
   );
 };
 
+const ExerciseHistoryList = ({ exercise }: { exercise: Exercise }) => {
+  const exerciseSets = useLiveQuery(() =>
+    db.exerciseSets.where("exerciseId").equals(exercise.id).toArray()
+  );
+  if (!exerciseSets || exerciseSets.length === 0) {
+    return null;
+  }
+  return (
+    <ColumnBox sx={{ marginTop: (theme) => theme.spacing(2) }}>
+      <Typography variant="h5">History</Typography>
+      {exerciseSets.map((set) => (
+        <div key={set.id}>
+          <Typography variant="body1">
+            {set.weight} lbs x {set.reps} reps on{" "}
+            {new Date(set.createdAt).toLocaleString()}
+          </Typography>
+        </div>
+      ))}
+    </ColumnBox>
+  );
+};
+
 const ExerciseView = () => {
   const [exerciseId, _] = useQueryParam("exerciseId", StringParam);
   const exercise = useLiveQuery(() =>
@@ -109,8 +161,9 @@ const ExerciseView = () => {
       <ColumnBox>
         <Typography variant="h4">{exercise.name}</Typography>
       </ColumnBox>
-      <ExerciseHistory exercise={exercise} />
+      <ExerciseHistoryChart exercise={exercise} />
       <TrackExercise exercise={exercise} />
+      <ExerciseHistoryList exercise={exercise} />
     </>
   );
 };
