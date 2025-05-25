@@ -27,6 +27,7 @@ import {
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import { useLocalStorageState } from "../../hooks/useLocalStorageState";
+import { LoadingPage } from "../../components/Loading";
 
 dayjs.extend(localizedFormat);
 
@@ -57,7 +58,9 @@ const ExerciseHistoryChart = ({ exercise }: { exercise: Exercise }) => {
   const sets = useLiveQuery(() =>
     db.exerciseSets.where("exerciseId").equals(exercise.id).toArray()
   );
-  if (!sets || sets.length === 0) {
+  const isLoading = sets === undefined;
+  if (isLoading) return <LoadingPage />;
+  if (sets.length === 0) {
     return <Alert severity="info">No history yet for this exercise</Alert>;
   }
   return (
@@ -147,6 +150,7 @@ const ExerciseHistoryList = ({ exercise }: { exercise: Exercise }) => {
       .limit(10)
       .toArray()
   );
+  const isLoading = exerciseSets === undefined;
   const setsByDate = React.useMemo(() => {
     if (!exerciseSets) return [];
     const grouped = exerciseSets.reduce(
@@ -167,6 +171,8 @@ const ExerciseHistoryList = ({ exercise }: { exercise: Exercise }) => {
       }))
       .sort((a, b) => dayjs(b.date).unix() - dayjs(a.date).unix());
   }, [exerciseSets]);
+
+  if (isLoading) return <LoadingPage />;
   return (
     <ColumnBox sx={{ marginTop: (theme) => theme.spacing(2) }}>
       <Typography variant="h5">History</Typography>
@@ -189,9 +195,16 @@ const ExerciseHistoryList = ({ exercise }: { exercise: Exercise }) => {
 
 const ExerciseView = () => {
   const [exerciseId, _] = useQueryParam("exerciseId", StringParam);
-  const exercise = useLiveQuery(() =>
-    exerciseId ? db.exercises.get(exerciseId) : undefined
+  const [exercise, isLoaded] = useLiveQuery(
+    () =>
+      exerciseId
+        ? db.exercises.get(exerciseId).then((exercise) => [exercise, true])
+        : [undefined, false],
+    [],
+    [undefined, false]
   );
+  const isLoading = !isLoaded;
+  if (isLoading) return <LoadingPage />;
   if (!exercise) {
     return <Alert severity="info">Exercise not found</Alert>;
   }

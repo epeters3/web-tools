@@ -16,6 +16,7 @@ import { ColumnBox } from "../../components/ColumnBox";
 import { useLiveQuery } from "dexie-react-hooks";
 import { Exercise, db } from "../../utils/db";
 import { useState } from "react";
+import { LoadingPage } from "../../components/Loading";
 
 const EditExerciseModal = ({
   isOpen,
@@ -88,10 +89,11 @@ const EditExerciseModal = ({
 };
 
 const FitnessTrackerIndexPage: React.FC<PageProps> = () => {
-  const exercises =
-    useLiveQuery(() => db.exercises.orderBy("name").toArray()) || [];
+  const exercises = useLiveQuery(() => db.exercises.orderBy("name").toArray());
   const [isEditExerciseModalOpen, setIsEditExerciseModalOpen] =
     React.useState(false);
+  const isLoading = exercises === undefined;
+  if (isLoading) return <LoadingPage />;
   const hasExercises = exercises.length > 0;
   return (
     <PageLayout>
