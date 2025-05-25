@@ -193,9 +193,9 @@ const ExerciseView = () => {
       <ColumnBox>
         <Typography variant="h4">{exercise.name}</Typography>
       </ColumnBox>
-      <ExerciseHistoryChart exercise={exercise} />
       <TrackExercise exercise={exercise} />
       <ExerciseHistoryList exercise={exercise} />
+      <ExerciseHistoryChart exercise={exercise} />
     </>
   );
 };
