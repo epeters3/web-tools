@@ -1,13 +1,20 @@
 import * as React from "react";
 import { HeadFC, PageProps } from "gatsby";
 import { CommonHead, PageLayout } from "../../components/PageLayout";
-import { Alert, Button, Slider, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  IconButton,
+  Slider,
+  Typography,
+} from "@mui/material";
 import { useLiveQuery } from "dexie-react-hooks";
 import { useQueryParam, StringParam } from "use-query-params";
 import { Exercise, ExerciseSet, db } from "../../utils/db";
 import { ColumnBox } from "../../components/ColumnBox";
 import { v4 as uuidv4 } from "uuid";
-import { Check } from "@mui/icons-material";
+import { ArrowBack, Check } from "@mui/icons-material";
 import {
   LineChart,
   Line,
@@ -164,17 +171,17 @@ const ExerciseHistoryList = ({ exercise }: { exercise: Exercise }) => {
     <ColumnBox sx={{ marginTop: (theme) => theme.spacing(2) }}>
       <Typography variant="h5">History</Typography>
       {setsByDate.map((dayOfSets) => (
-        <>
+        <ColumnBox key={dayOfSets.date}>
           <Typography variant="h6" key={dayOfSets.date}>
             {dayOfSets.date}
           </Typography>
           {dayOfSets.sets.map((set) => (
-            <Typography variant="body1">
+            <Typography key={set.id} variant="body1">
               {set.weight} lbs x {set.reps} reps at{" "}
               {new Date(set.createdAt).toLocaleTimeString()}
             </Typography>
           ))}
-        </>
+        </ColumnBox>
       ))}
     </ColumnBox>
   );
@@ -190,9 +197,12 @@ const ExerciseView = () => {
   }
   return (
     <>
-      <ColumnBox>
+      <Box sx={{ display: "flex", gap: (theme) => theme.spacing(1) }}>
+        <IconButton href="./..">
+          <ArrowBack />
+        </IconButton>
         <Typography variant="h4">{exercise.name}</Typography>
-      </ColumnBox>
+      </Box>
       <TrackExercise exercise={exercise} />
       <ExerciseHistoryList exercise={exercise} />
       <ExerciseHistoryChart exercise={exercise} />

@@ -104,7 +104,10 @@ const FitnessTrackerIndexPage: React.FC<PageProps> = () => {
           <>
             <Typography variant="h4">Let's Track</Typography>
             {exercises.map((exercise) => (
-              <Button href={`./exercise?exerciseId=${exercise.id}`}>
+              <Button
+                key={exercise.id}
+                href={`./exercise?exerciseId=${exercise.id}`}
+              >
                 {exercise.name}
               </Button>
             ))}
