@@ -88,7 +88,8 @@ const EditExerciseModal = ({
 };
 
 const FitnessTrackerIndexPage: React.FC<PageProps> = () => {
-  const exercises = useLiveQuery(() => db.exercises.toArray()) || [];
+  const exercises =
+    useLiveQuery(() => db.exercises.orderBy("name").toArray()) || [];
   const [isEditExerciseModalOpen, setIsEditExerciseModalOpen] =
     React.useState(false);
   const hasExercises = exercises.length > 0;
