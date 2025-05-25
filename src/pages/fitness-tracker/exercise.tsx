@@ -128,7 +128,12 @@ const TrackExercise = ({ exercise }: { exercise: Exercise }) => {
 
 const ExerciseHistoryList = ({ exercise }: { exercise: Exercise }) => {
   const exerciseSets = useLiveQuery(() =>
-    db.exerciseSets.where("exerciseId").equals(exercise.id).toArray()
+    db.exerciseSets
+      .where("exerciseId")
+      .equals(exercise.id)
+      .reverse()
+      .limit(10)
+      .toArray()
   );
   if (!exerciseSets || exerciseSets.length === 0) {
     return null;
