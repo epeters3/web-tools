@@ -94,16 +94,17 @@ const FitnessTrackerIndexPage: React.FC<PageProps> = () => {
     React.useState(false);
   const hasExercises = exercises.length > 0;
   return (
-    <PageLayout heading="Fitness Tracker">
+    <PageLayout>
       <EditExerciseModal
         isOpen={isEditExerciseModalOpen}
         onClose={() => setIsEditExerciseModalOpen(false)}
         onSave={(exercise) => db.exercises.put(exercise, exercise.id)}
       />
       <ColumnBox gap={2}>
+        <Typography variant="h4">Fitness Tracker</Typography>
         {hasExercises ? (
           <>
-            <Typography variant="h4">Let's Track</Typography>
+            <Typography variant="body1">Let's Track!</Typography>
             {exercises.map((exercise) => (
               <Button
                 key={exercise.id}
