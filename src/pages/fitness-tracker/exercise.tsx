@@ -19,6 +19,7 @@ import {
 } from "recharts";
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
+import { useLocalStorageState } from "../../hooks/useLocalStorageState";
 
 dayjs.extend(localizedFormat);
 
@@ -63,8 +64,12 @@ const ExerciseHistoryChart = ({ exercise }: { exercise: Exercise }) => {
 };
 
 const TrackExercise = ({ exercise }: { exercise: Exercise }) => {
-  const [weight, setWeight] = React.useState(exercise.minWeight);
-  const [reps, setReps] = React.useState(10);
+  const baseSettingKey = `fitnessTracker.exercise.${exercise.id}.setting`;
+  const [weight, setWeight] = useLocalStorageState(
+    `${baseSettingKey}.weight`,
+    exercise.minWeight
+  );
+  const [reps, setReps] = useLocalStorageState(`${baseSettingKey}.reps`, 10);
   const [isTracked, setIsTracked] = React.useState(false);
 
   const handleSave = () => {
