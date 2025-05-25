@@ -96,7 +96,7 @@ const TrackExercise = ({ exercise }: { exercise: Exercise }) => {
         min={exercise.minWeight}
         max={exercise.maxWeight}
         valueLabelDisplay="on"
-        step={2.5}
+        step={5}
         marks
         valueLabelFormat={(value) => `${value} lbs`}
         onChange={(_, value) => setWeight(value as number)}
@@ -135,19 +135,41 @@ const ExerciseHistoryList = ({ exercise }: { exercise: Exercise }) => {
       .limit(10)
       .toArray()
   );
-  if (!exerciseSets || exerciseSets.length === 0) {
-    return null;
-  }
+  const setsByDate = React.useMemo(() => {
+    if (!exerciseSets) return [];
+    const grouped = exerciseSets.reduce(
+      (acc, set) => {
+        const date = dayjs(set.createdAt).format("YYYY-MM-DD");
+        if (!acc[date]) {
+          acc[date] = [];
+        }
+        acc[date].push(set);
+        return acc;
+      },
+      {} as Record<string, ExerciseSet[]>
+    );
+    return Object.entries(grouped)
+      .map(([date, sets]) => ({
+        date,
+        sets,
+      }))
+      .sort((a, b) => dayjs(b.date).unix() - dayjs(a.date).unix());
+  }, [exerciseSets]);
   return (
     <ColumnBox sx={{ marginTop: (theme) => theme.spacing(2) }}>
       <Typography variant="h5">History</Typography>
-      {exerciseSets.map((set) => (
-        <div key={set.id}>
-          <Typography variant="body1">
-            {set.weight} lbs x {set.reps} reps on{" "}
-            {new Date(set.createdAt).toLocaleString()}
+      {setsByDate.map((dayOfSets) => (
+        <>
+          <Typography variant="h6" key={dayOfSets.date}>
+            {dayOfSets.date}
           </Typography>
-        </div>
+          {dayOfSets.sets.map((set) => (
+            <Typography variant="body1">
+              {set.weight} lbs x {set.reps} reps at{" "}
+              {new Date(set.createdAt).toLocaleTimeString()}
+            </Typography>
+          ))}
+        </>
       ))}
     </ColumnBox>
   );
