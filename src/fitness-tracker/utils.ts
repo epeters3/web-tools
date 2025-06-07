@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { Exercise, ExerciseSet } from "../../utils/db";
+import { Exercise, ExerciseSet } from "../utils/db";
 
 export const groupExerciseSetsByDate = (exerciseSets: ExerciseSet[]) => {
   if (!exerciseSets) return [];

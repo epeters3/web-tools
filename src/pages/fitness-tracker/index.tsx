@@ -17,7 +17,7 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { Exercise, db } from "../../utils/db";
 import { useState } from "react";
 import { LoadingPage } from "../../components/Loading";
-import { groupExerciseSetsByExerciseAndDate } from "./utils";
+import { groupExerciseSetsByExerciseAndDate } from "../../fitness-tracker/utils";
 
 const EditExerciseModal = ({
   isOpen,

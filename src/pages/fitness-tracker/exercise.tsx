@@ -28,7 +28,7 @@ import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import { useLocalStorageState } from "../../hooks/useLocalStorageState";
 import { LoadingPage } from "../../components/Loading";
-import { groupExerciseSetsByDate } from "./utils";
+import { groupExerciseSetsByDate } from "../../fitness-tracker/utils";
 
 dayjs.extend(localizedFormat);
 
