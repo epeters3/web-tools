@@ -28,6 +28,7 @@ import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import { useLocalStorageState } from "../../hooks/useLocalStorageState";
 import { LoadingPage } from "../../components/Loading";
+import { groupExerciseSetsByDate } from "./utils";
 
 dayjs.extend(localizedFormat);
 
@@ -151,27 +152,10 @@ const ExerciseHistoryList = ({ exercise }: { exercise: Exercise }) => {
       .toArray()
   );
   const isLoading = exerciseSets === undefined;
-  const setsByDate = React.useMemo(() => {
-    if (!exerciseSets) return [];
-    const grouped = exerciseSets.reduce(
-      (acc, set) => {
-        const date = dayjs(set.createdAt).format("YYYY-MM-DD");
-        if (!acc[date]) {
-          acc[date] = [];
-        }
-        acc[date].push(set);
-        return acc;
-      },
-      {} as Record<string, ExerciseSet[]>
-    );
-    return Object.entries(grouped)
-      .map(([date, sets]) => ({
-        date,
-        sets,
-      }))
-      .sort((a, b) => dayjs(b.date).unix() - dayjs(a.date).unix());
-  }, [exerciseSets]);
-
+  const setsByDate = React.useMemo(
+    () => groupExerciseSetsByDate(exerciseSets || []),
+    [exerciseSets]
+  );
   if (isLoading) return <LoadingPage />;
   return (
     <ColumnBox sx={{ marginTop: (theme) => theme.spacing(2) }}>

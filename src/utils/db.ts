@@ -61,5 +61,5 @@ db.version(1).stores({
   // This allows us to filter on both fields at once, and orders the results
   // by field1 first, then field2. Source:
   // https://dexie.org/docs/Compound-Index
-  exerciseSets: "id,[exerciseId+createdAt],reps,weight,duration,rpe",
+  exerciseSets: "id,[createdAt+exerciseId],reps,weight,duration,rpe",
 });

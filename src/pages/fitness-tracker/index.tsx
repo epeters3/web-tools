@@ -17,6 +17,7 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { Exercise, db } from "../../utils/db";
 import { useState } from "react";
 import { LoadingPage } from "../../components/Loading";
+import { groupExerciseSetsByExerciseAndDate } from "./utils";
 
 const EditExerciseModal = ({
   isOpen,
@@ -88,6 +89,54 @@ const EditExerciseModal = ({
   );
 };
 
+const RecentExercises = ({ numDays }: { numDays: number }) => {
+  const recentExerciseSets = useLiveQuery(() =>
+    db.exerciseSets
+      .orderBy("createdAt")
+      .reverse()
+      .limit(numDays * 30)
+      .toArray()
+  );
+  const exercises = useLiveQuery(() => db.exercises.toArray());
+
+  const isLoading = recentExerciseSets === undefined || exercises === undefined;
+  const grouped = React.useMemo(
+    () =>
+      groupExerciseSetsByExerciseAndDate(
+        recentExerciseSets || [],
+        exercises || []
+      ).slice(0, numDays), // just show the most recent 2 days
+    [recentExerciseSets]
+  );
+  if (isLoading) return <LoadingPage />;
+  if (recentExerciseSets.length === 0) {
+    return null;
+  }
+  return (
+    <ColumnBox gap={2}>
+      <Typography variant="h5">Recent Exercises</Typography>
+      {grouped.map(({ date, sets }) => (
+        <ColumnBox key={date} gap={1}>
+          <Typography variant="h6">{date}</Typography>
+          {sets.map(({ exercise, sets }) => (
+            <ColumnBox key={exercise.id} gap={1}>
+              <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+                {exercise.name}
+              </Typography>
+              {sets.map((set) => (
+                <Typography key={set.id} variant="body2">
+                  {set.weight} lbs x {set.reps} reps at{" "}
+                  {new Date(set.createdAt).toLocaleTimeString()}
+                </Typography>
+              ))}
+            </ColumnBox>
+          ))}
+        </ColumnBox>
+      ))}
+    </ColumnBox>
+  );
+};
+
 const FitnessTrackerIndexPage: React.FC<PageProps> = () => {
   const exercises = useLiveQuery(() => db.exercises.orderBy("name").toArray());
   const [isEditExerciseModalOpen, setIsEditExerciseModalOpen] =
@@ -123,6 +172,7 @@ const FitnessTrackerIndexPage: React.FC<PageProps> = () => {
         >
           Create an Exercise
         </Button>
+        <RecentExercises numDays={4} />
       </ColumnBox>
     </PageLayout>
   );
