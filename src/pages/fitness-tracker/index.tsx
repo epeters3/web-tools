@@ -118,18 +118,8 @@ const RecentExercises = ({ numDays }: { numDays: number }) => {
       {grouped.map(({ date, sets }) => (
         <ColumnBox key={date} gap={1}>
           <Typography variant="h6">{date}</Typography>
-          {sets.map(({ exercise, sets }) => (
-            <ColumnBox key={exercise.id} gap={1}>
-              <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
-                {exercise.name}
-              </Typography>
-              {sets.map((set) => (
-                <Typography key={set.id} variant="body2">
-                  {set.weight} lbs x {set.reps} reps at{" "}
-                  {new Date(set.createdAt).toLocaleTimeString()}
-                </Typography>
-              ))}
-            </ColumnBox>
+          {sets.map(({ exercise }) => (
+            <Typography variant="body2">{exercise.name}</Typography>
           ))}
         </ColumnBox>
       ))}
