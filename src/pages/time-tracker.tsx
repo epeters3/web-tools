@@ -20,6 +20,7 @@ import { WORKDAY_MS } from "../utils/constants";
 import { formatDuration } from "../utils";
 import { ColumnBox } from "../components/ColumnBox";
 import { TimeEvent, TimeHistory } from "../components/TimeHistory";
+import { useLocalStorageState } from "../hooks/useLocalStorageState";
 
 dayjs.extend(duration);
 dayjs.extend(localizedFormat);
@@ -71,13 +72,22 @@ const ResetModal = ({
  * Based on https://www.geeksforgeeks.org/create-a-stop-watch-using-reactjs/
  */
 const TimeTracker: React.FC<PageProps> = () => {
-  const [isActive, setIsActive] = React.useState(false);
-  const [isPaused, setIsPaused] = React.useState(true);
+  const [isActive, setIsActive] = useLocalStorageState(
+    "timeTracker.isActive",
+    false
+  );
+  const [isPaused, setIsPaused] = useLocalStorageState(
+    "timeTracker.isPaused",
+    true
+  );
   const [isEditorOpen, setIsEditorOpen] = React.useState(false);
   const [isResetModalOpen, setIsResetModalOpen] = React.useState(false);
-  const [history, setHistory] = React.useState<TimeEvent[]>([]);
-  const [now, setNow] = React.useState(Date.now());
-  const [time, setTime] = React.useState(0);
+  const [history, setHistory] = useLocalStorageState<TimeEvent[]>(
+    "timeTracker.history",
+    []
+  );
+  const [now, setNow] = useLocalStorageState("timeTracker.now", Date.now());
+  const [time, setTime] = useLocalStorageState("timeTracker.time", 0);
 
   React.useEffect(() => {
     const interval = setInterval(() => {
