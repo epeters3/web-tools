@@ -35,6 +35,11 @@ const links = [
     name: "Character Counter",
     description: "Count how how many characters are in a body of text.",
   },
+  {
+    path: "/speed-reader",
+    name: "Speed Reader",
+    description: "Practice rapid reading with controlled pacing.",
+  },
 ];
 
 const IndexPage: React.FC<PageProps> = () => {
