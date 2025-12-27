@@ -17,6 +17,8 @@ jobs:
           node-version-file: .tool-versions
           cache: 'npm'
       - name: Build
+        env:
+          GATSBY_GA_MEASUREMENT_ID: ${{ secrets.GATSBY_GA_MEASUREMENT_ID }}
         run: |
           npm ci
           npm run build -- --prefix-paths
