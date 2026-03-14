@@ -16,12 +16,35 @@ import { Link } from "gatsby";
 import { QueryParamProvider } from "use-query-params";
 import { ReachAdapter } from "use-query-params/adapters/reach";
 
-const Main = styled("main")(({ theme }) => ({ padding: theme.spacing(2) }));
+const Main = styled("main")(({ theme }) => ({
+  padding: theme.spacing(4),
+  maxWidth: "900px",
+  width: "100%",
+}));
 
 const AppBarGroup = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
-  gap: theme.spacing(2),
+  gap: theme.spacing(1),
+}));
+
+const GradientTitle = styled(Typography)({
+  background: "linear-gradient(135deg, #a5b4fc 0%, #818cf8 50%, #6ee7b7 100%)",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+  backgroundClip: "text",
+  fontWeight: 700,
+  letterSpacing: "0.02em",
+});
+
+const PageHeading = styled(Typography)(({ theme }) => ({
+  fontWeight: 700,
+  letterSpacing: "-0.02em",
+  background: "linear-gradient(135deg, #f1f5f9 0%, #a5b4fc 100%)",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+  backgroundClip: "text",
+  marginBottom: theme.spacing(3),
 }));
 
 export const PageLayout = ({
@@ -38,16 +61,16 @@ export const PageLayout = ({
         <Toolbar>
           <AppBarGroup>
             <Link to="/">
-              <IconButton>
-                <Home />
+              <IconButton size="small">
+                <Home sx={{ color: "rgba(165, 180, 252, 0.85)" }} />
               </IconButton>
             </Link>
-            <Typography variant="h5">Web Tools</Typography>
+            <GradientTitle variant="h5">Web Tools</GradientTitle>
           </AppBarGroup>
           <AppBarGroup sx={{ marginLeft: "auto" }}>
             <Link to="https://github.com/epeters3/web-tools" target="_blank">
-              <IconButton>
-                <GitHub />
+              <IconButton size="small">
+                <GitHub sx={{ color: "rgba(165, 180, 252, 0.85)" }} />
               </IconButton>
             </Link>
           </AppBarGroup>
@@ -63,9 +86,7 @@ export const PageLayout = ({
       >
         <Main>
           {heading ? (
-            <Typography variant="h2" mb={2}>
-              {heading}
-            </Typography>
+            <PageHeading variant="h2">{heading}</PageHeading>
           ) : null}
           {children}
         </Main>

@@ -65,16 +65,15 @@ const SpeedReaderPage: React.FC<PageProps> = () => {
 
   return (
     <PageLayout heading="Speed Reader">
-      <ColumnBox gap={2}>
-        <>
-          <TextField
-            fullWidth
-            multiline
-            rows={4}
-            value={text}
-            onChange={(event) => setText(event.target.value)}
-          />
-        </>
+      <ColumnBox gap={2.5}>
+        <TextField
+          fullWidth
+          multiline
+          rows={4}
+          value={text}
+          onChange={(event) => setText(event.target.value)}
+          placeholder="Paste text here to begin speed reading…"
+        />
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
             <TextField
@@ -97,9 +96,32 @@ const SpeedReaderPage: React.FC<PageProps> = () => {
             />
           </Grid>
         </Grid>
-        <Typography variant="h4" align="center">
-          {currentChunk || "Paste text above to begin."}
-        </Typography>
+        <Box
+          sx={{
+            background: "rgba(13, 13, 26, 0.8)",
+            border: "1px solid rgba(129, 140, 248, 0.2)",
+            borderRadius: 3,
+            px: 4,
+            py: 4,
+            width: "100%",
+            minHeight: 100,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Typography
+            variant="h4"
+            align="center"
+            sx={{
+              color: currentChunk ? "#f1f5f9" : "text.secondary",
+              fontWeight: currentChunk ? 600 : 400,
+              letterSpacing: "0.01em",
+            }}
+          >
+            {currentChunk || "Paste text above to begin."}
+          </Typography>
+        </Box>
         <ButtonGroup>
           <Button
             variant="outlined"
@@ -123,6 +145,20 @@ const SpeedReaderPage: React.FC<PageProps> = () => {
         </ButtonGroup>
         {words.length > 0 ? (
           <Box width="100%">
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                mb: 0.75,
+              }}
+            >
+              <Typography variant="caption" sx={{ color: "text.secondary" }}>
+                Progress
+              </Typography>
+              <Typography variant="caption" sx={{ color: "text.secondary" }}>
+                {Math.min(currentIndex, words.length)} / {words.length} words
+              </Typography>
+            </Box>
             <LinearProgress
               variant="determinate"
               value={Math.min((currentIndex / words.length) * 100, 100)}

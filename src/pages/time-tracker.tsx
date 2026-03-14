@@ -5,6 +5,7 @@ import duration from "dayjs/plugin/duration";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import { CommonHead, PageLayout } from "../components/PageLayout";
 import {
+  Box,
   Button,
   ButtonGroup,
   Dialog,
@@ -28,14 +29,38 @@ dayjs.extend(localizedFormat);
 const DataDisplay = ({
   children,
   subtitle,
+  accent,
 }: {
   children: React.ReactFragment;
   subtitle: string;
+  accent?: string;
 }) => (
-  <ColumnBox>
-    <Typography variant="h4">{children}</Typography>
-    <Typography>{subtitle}</Typography>
-  </ColumnBox>
+  <Box
+    sx={{
+      background: "rgba(13, 13, 26, 0.7)",
+      border: `1px solid ${accent ? `${accent}30` : "rgba(129, 140, 248, 0.15)"}`,
+      borderRadius: 2.5,
+      px: 3,
+      py: 2,
+      minWidth: 180,
+      textAlign: "center",
+    }}
+  >
+    <Typography
+      variant="h4"
+      sx={{
+        fontWeight: 700,
+        color: accent || "#a5b4fc",
+        fontVariantNumeric: "tabular-nums",
+        letterSpacing: "0.02em",
+      }}
+    >
+      {children}
+    </Typography>
+    <Typography variant="body2" sx={{ color: "text.secondary", mt: 0.25 }}>
+      {subtitle}
+    </Typography>
+  </Box>
 );
 
 const ResetModal = ({
@@ -132,16 +157,25 @@ const TimeTracker: React.FC<PageProps> = () => {
         onClose={() => setIsResetModalOpen(false)}
         onReset={handleReset}
       />
-      <ColumnBox gap={2}>
-        <DataDisplay subtitle="Time tracked so far">
-          {formatDuration(time)}
-        </DataDisplay>
-        <DataDisplay subtitle="Time remaining">
-          {formatDuration(timeRemaining)}
-        </DataDisplay>
-        <DataDisplay subtitle="Finish time">
-          {dayjs(now).add(timeRemaining, "millisecond").format("LTS")}
-        </DataDisplay>
+      <ColumnBox gap={3}>
+        <Box
+          sx={{
+            display: "flex",
+            gap: 2,
+            flexWrap: "wrap",
+            justifyContent: "center",
+          }}
+        >
+          <DataDisplay subtitle="Time tracked" accent="#818cf8">
+            {formatDuration(time)}
+          </DataDisplay>
+          <DataDisplay subtitle="Time remaining" accent="#34d399">
+            {formatDuration(timeRemaining)}
+          </DataDisplay>
+          <DataDisplay subtitle="Finish time" accent="#fb923c">
+            {dayjs(now).add(timeRemaining, "millisecond").format("LTS")}
+          </DataDisplay>
+        </Box>
         {isActive ? (
           <ButtonGroup>
             <Button
