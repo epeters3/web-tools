@@ -40,6 +40,12 @@ const links = [
     name: "Speed Reader",
     description: "Practice rapid reading with controlled pacing.",
   },
+  {
+    path: "/tony-grove-campground",
+    name: "Tony Grove Campground",
+    description:
+      "Live availability table for Tony Grove Campground, UT — Fri–Mon windows through Aug 20, 2026.",
+  },
 ];
 
 const IndexPage: React.FC<PageProps> = () => {
